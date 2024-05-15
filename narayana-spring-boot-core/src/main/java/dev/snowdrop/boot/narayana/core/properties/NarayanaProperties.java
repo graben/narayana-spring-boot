@@ -46,6 +46,11 @@ public class NarayanaProperties {
     private String transactionManagerId = "1";
 
     /**
+     * Shorten transaction manager id if exceed a length of 28 bytes.
+     */
+    private boolean shortenTransactionManagerIdIfNecessary = false;
+
+    /**
      * Enable one phase commit optimization.
      */
     private boolean onePhaseCommit = true;
@@ -144,6 +149,14 @@ public class NarayanaProperties {
 
     public void setTransactionManagerId(String transactionManagerId) {
         this.transactionManagerId = transactionManagerId;
+    }
+
+    public boolean isShortenTransactionManagerIdIfNecessary() {
+        return this.shortenTransactionManagerIdIfNecessary;
+    }
+
+    public void setShortenTransactionManagerIdIfNecessary(boolean shortenTransactionManagerIdIfNecessary) {
+        this.shortenTransactionManagerIdIfNecessary = shortenTransactionManagerIdIfNecessary;
     }
 
     public boolean isOnePhaseCommit() {
