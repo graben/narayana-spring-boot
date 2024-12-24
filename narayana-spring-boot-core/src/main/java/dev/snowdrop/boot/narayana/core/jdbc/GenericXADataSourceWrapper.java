@@ -21,6 +21,7 @@ import javax.sql.XADataSource;
 
 import com.arjuna.ats.internal.jta.recovery.arjunacore.XARecoveryModule;
 import dev.snowdrop.boot.narayana.core.properties.RecoveryCredentialsProperties;
+import dev.snowdrop.boot.narayana.core.properties.TransactionalDriverPoolProperties;
 
 /**
  * {@link AbstractXADataSourceWrapper} implementation that uses {@link NarayanaDataSource} to wrap an
@@ -29,6 +30,8 @@ import dev.snowdrop.boot.narayana.core.properties.RecoveryCredentialsProperties;
  * @author <a href="mailto:gytis@redhat.com">Gytis Trikleris</a>
  */
 public class GenericXADataSourceWrapper extends AbstractXADataSourceWrapper {
+
+    private final TransactionalDriverPoolProperties poolProperties;
 
     /**
      * Create a new {@link GenericXADataSourceWrapper} instance.
@@ -46,7 +49,30 @@ public class GenericXADataSourceWrapper extends AbstractXADataSourceWrapper {
      * @param recoveryCredentials credentials for recovery helper
      */
     public GenericXADataSourceWrapper(XARecoveryModule xaRecoveryModule, RecoveryCredentialsProperties recoveryCredentials) {
+        this(xaRecoveryModule, new TransactionalDriverPoolProperties(), recoveryCredentials);
+    }
+
+    /**
+     * Create a new {@link GenericXADataSourceWrapper} instance.
+     *
+     * @param xaRecoveryModule    recovery module to register data source with.
+     * @param poolProperties      Transactional driver pool properties
+     */
+    public GenericXADataSourceWrapper(XARecoveryModule xaRecoveryModule, TransactionalDriverPoolProperties poolProperties) {
+        this(xaRecoveryModule, poolProperties, RecoveryCredentialsProperties.DEFAULT);
+    }
+
+    /**
+     * Create a new {@link GenericXADataSourceWrapper} instance.
+     *
+     * @param xaRecoveryModule    recovery module to register data source with.
+     * @param poolProperties      Transactional driver pool properties
+     * @param recoveryCredentials credentials for recovery helper
+     */
+    public GenericXADataSourceWrapper(XARecoveryModule xaRecoveryModule, TransactionalDriverPoolProperties poolProperties,
+            RecoveryCredentialsProperties recoveryCredentials) {
         super(xaRecoveryModule, recoveryCredentials);
+        this.poolProperties = poolProperties;
     }
 
     /**
@@ -57,7 +83,7 @@ public class GenericXADataSourceWrapper extends AbstractXADataSourceWrapper {
      */
     @Override
     protected DataSource wrapDataSourceInternal(XADataSource dataSource) {
-        return new NarayanaDataSource(dataSource);
+        return new NarayanaDataSource(dataSource, this.poolProperties);
     }
 
 }

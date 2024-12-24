@@ -123,6 +123,9 @@ public class NarayanaProperties {
     private List<String> expiryScanners = List.of(
             "com.arjuna.ats.internal.arjuna.recovery.ExpiredTransactionStatusManagerScanner");
 
+    @NestedConfigurationProperty
+    private final TransactionalDriverPoolProperties transactionalDriverPool = new TransactionalDriverPoolProperties();
+
     /**
      * MessagingHub specific properties used if pooled connection factory wrapper is enabled.
      * See <a href="https://github.com/messaginghub/pooled-jms/blob/master/pooled-jms-docs/Configuration.md">...</a> for the list of supported properties.
@@ -271,6 +274,10 @@ public class NarayanaProperties {
 
     public void setRecoveryJmsCredentials(RecoveryCredentialsProperties recoveryJmsCredentials) {
         this.recoveryJmsCredentials = recoveryJmsCredentials;
+    }
+
+    public TransactionalDriverPoolProperties getTransactionalDriverPool() {
+        return this.transactionalDriverPool;
     }
 
     public MessagingHubConnectionFactoryProperties getMessaginghub() {

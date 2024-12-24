@@ -28,6 +28,7 @@ import javax.sql.XADataSource;
 
 import com.arjuna.ats.internal.jdbc.ConnectionManager;
 import com.arjuna.ats.jdbc.TransactionalDriver;
+import dev.snowdrop.boot.narayana.core.properties.TransactionalDriverPoolProperties;
 
 /**
  * {@link DataSource} implementation wrapping {@link XADataSource} and using
@@ -38,27 +39,35 @@ import com.arjuna.ats.jdbc.TransactionalDriver;
 public class NarayanaDataSource implements DataSource {
 
     private final XADataSource xaDataSource;
+    private final TransactionalDriverPoolProperties poolProperties;
 
     /**
      * Create a new {@link NarayanaDataSource} instance.
      *
      * @param xaDataSource the XA DataSource
+     * @param poolProperties   Transactional driver pool properties
      */
-    public NarayanaDataSource(XADataSource xaDataSource) {
+    public NarayanaDataSource(XADataSource xaDataSource, TransactionalDriverPoolProperties poolProperties) {
         this.xaDataSource = xaDataSource;
+        this.poolProperties = poolProperties;
+    }
+
+    private Properties createProperties() {
+        Properties properties = new Properties();
+        properties.put(TransactionalDriver.XADataSource, this.xaDataSource);
+        properties.put(TransactionalDriver.poolConnections, String.valueOf(this.poolProperties.isEnabled()));
+        properties.put(TransactionalDriver.maxConnections, this.poolProperties.getMaxConnections());
+        return properties;
     }
 
     @Override
     public Connection getConnection() throws SQLException {
-        Properties properties = new Properties();
-        properties.put(TransactionalDriver.XADataSource, this.xaDataSource);
-        return ConnectionManager.create(null, properties);
+        return ConnectionManager.create(null, createProperties());
     }
 
     @Override
     public Connection getConnection(String username, String password) throws SQLException {
-        Properties properties = new Properties();
-        properties.put(TransactionalDriver.XADataSource, this.xaDataSource);
+        Properties properties = createProperties();
         properties.put(TransactionalDriver.userName, username);
         properties.put(TransactionalDriver.password, password);
         return ConnectionManager.create(null, properties);
