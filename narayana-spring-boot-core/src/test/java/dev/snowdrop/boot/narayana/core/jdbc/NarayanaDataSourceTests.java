@@ -27,7 +27,7 @@ import javax.sql.XAConnection;
 import javax.sql.XADataSource;
 
 import com.arjuna.ats.internal.jdbc.ConnectionImple;
-import com.arjuna.ats.jdbc.TransactionalDriver;
+import dev.snowdrop.boot.narayana.core.properties.TransactionalDriverProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,11 +51,13 @@ class NarayanaDataSourceTests {
     @Mock
     private XADataSource mockXaDataSource;
 
+    private TransactionalDriverProperties transactionalDriverProperties;
     private NarayanaDataSource dataSourceBean;
 
     @BeforeEach
     void before() {
-        this.dataSourceBean = new NarayanaDataSource(this.mockXaDataSource);
+        this.transactionalDriverProperties = new TransactionalDriverProperties();
+        this.dataSourceBean = new NarayanaDataSource(this.mockXaDataSource, this.transactionalDriverProperties);
     }
 
     @Test
@@ -81,6 +83,24 @@ class NarayanaDataSourceTests {
     }
 
     @Test
+    void shouldGetSameConnection() throws SQLException {
+        this.transactionalDriverProperties.getPool().setEnabled(true);
+        Connection connection1 = this.dataSourceBean.getConnection();
+        connection1.close();
+        Connection connection2 = this.dataSourceBean.getConnection();
+        assertThat(connection2).isSameAs(connection1);
+    }
+
+    @Test
+    void shouldNotGetSameConnection() throws SQLException {
+        this.transactionalDriverProperties.getPool().setEnabled(false);
+        Connection connection1 = this.dataSourceBean.getConnection();
+        connection1.close();
+        Connection connection2 = this.dataSourceBean.getConnection();
+        assertThat(connection2).isNotSameAs(connection1);
+    }
+
+    @Test
     void shouldGetConnectionAndCommit() throws SQLException {
         DatabaseMetaData mockMetaData = mock(DatabaseMetaData.class);
         Connection mockConnection = mock(Connection.class);
@@ -91,10 +111,6 @@ class NarayanaDataSourceTests {
         given(mockConnection.getMetaData()).willReturn(mockMetaData);
         given(mockXaConnection.getConnection()).willReturn(mockConnection);
         given(this.mockXaDataSource.getXAConnection()).willReturn(mockXaConnection);
-
-        // TODO properties not used
-        Properties properties = new Properties();
-        properties.put(TransactionalDriver.XADataSource, this.mockXaDataSource);
 
         Connection connection = this.dataSourceBean.getConnection();
         assertThat(connection).isInstanceOf(ConnectionImple.class);
@@ -124,12 +140,6 @@ class NarayanaDataSourceTests {
         given(mockConnection.getMetaData()).willReturn(mockMetaData);
         given(mockXaConnection.getConnection()).willReturn(mockConnection);
         given(this.mockXaDataSource.getXAConnection(authProperties.getProperty("username"), authProperties.getProperty("username"))).willReturn(mockXaConnection);
-
-        // TODO properties not used
-        Properties properties = new Properties();
-        properties.put(TransactionalDriver.XADataSource, this.mockXaDataSource);
-        properties.put(TransactionalDriver.userName, authProperties.getProperty("username"));
-        properties.put(TransactionalDriver.password, authProperties.getProperty("username"));
 
         Connection connection = this.dataSourceBean.getConnection(authProperties.getProperty("username"), authProperties.getProperty("username"));
         assertThat(connection).isInstanceOf(ConnectionImple.class);

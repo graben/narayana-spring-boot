@@ -21,6 +21,7 @@ import javax.sql.XADataSource;
 
 import com.arjuna.ats.internal.jta.recovery.arjunacore.XARecoveryModule;
 import dev.snowdrop.boot.narayana.core.properties.RecoveryCredentialsProperties;
+import dev.snowdrop.boot.narayana.core.properties.TransactionalDriverProperties;
 
 /**
  * {@link AbstractXADataSourceWrapper} implementation that uses {@link NarayanaDataSource} to wrap an
@@ -46,7 +47,29 @@ public class GenericXADataSourceWrapper extends AbstractXADataSourceWrapper {
      * @param recoveryCredentials credentials for recovery helper
      */
     public GenericXADataSourceWrapper(XARecoveryModule xaRecoveryModule, RecoveryCredentialsProperties recoveryCredentials) {
-        super(xaRecoveryModule, recoveryCredentials);
+        this(xaRecoveryModule, new TransactionalDriverProperties(), recoveryCredentials);
+    }
+
+    /**
+     * Create a new {@link GenericXADataSourceWrapper} instance.
+     *
+     * @param xaRecoveryModule              recovery module to register data source with.
+     * @param transactionalDriverProperties Transactional driver properties
+     */
+    public GenericXADataSourceWrapper(XARecoveryModule xaRecoveryModule, TransactionalDriverProperties transactionalDriverProperties) {
+        this(xaRecoveryModule, transactionalDriverProperties, RecoveryCredentialsProperties.DEFAULT);
+    }
+
+    /**
+     * Create a new {@link GenericXADataSourceWrapper} instance.
+     *
+     * @param xaRecoveryModule              recovery module to register data source with.
+     * @param transactionalDriverProperties Transactional driver properties
+     * @param recoveryCredentials           credentials for recovery helper
+     */
+    public GenericXADataSourceWrapper(XARecoveryModule xaRecoveryModule, TransactionalDriverProperties transactionalDriverProperties,
+            RecoveryCredentialsProperties recoveryCredentials) {
+        super(xaRecoveryModule, transactionalDriverProperties, recoveryCredentials);
     }
 
     /**
@@ -57,7 +80,7 @@ public class GenericXADataSourceWrapper extends AbstractXADataSourceWrapper {
      */
     @Override
     protected DataSource wrapDataSourceInternal(XADataSource dataSource) {
-        return new NarayanaDataSource(dataSource);
+        return new NarayanaDataSource(dataSource, this.transactionalDriverProperties);
     }
 
 }
