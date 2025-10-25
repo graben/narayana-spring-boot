@@ -18,14 +18,10 @@ package dev.snowdrop.boot.narayana.testcontainers;
 
 import dev.snowdrop.boot.narayana.app.TestApplication;
 import dev.snowdrop.boot.narayana.pooled.PooledRecoveryIT;
+import dev.snowdrop.boot.narayana.testcontainers.configuration.OracleContainerConfiguration;
 import org.junit.jupiter.api.Tag;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.testcontainers.containers.JdbcDatabaseContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.oracle.OracleContainer;
-import org.testcontainers.utility.MountableFile;
 
 @Tag("testcontainers")
 @Tag("agroal")
@@ -35,10 +31,5 @@ import org.testcontainers.utility.MountableFile;
     "spring.datasource.generateUniqueName=false",
     "spring.datasource.name=jdbc"
 })
-public class OraclePooledRecoveryIT extends PooledRecoveryIT {
-
-    @Container
-    @ServiceConnection
-    static JdbcDatabaseContainer<?> oracle = new OracleContainer("gvenzl/oracle-free:slim-faststart")
-            .withCopyFileToContainer(MountableFile.forClasspathResource("oracle-initscript.sql"), "/container-entrypoint-initdb.d/init.sql");
+public class OraclePooledRecoveryIT extends PooledRecoveryIT implements OracleContainerConfiguration {
 }

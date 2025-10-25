@@ -18,12 +18,9 @@ package dev.snowdrop.boot.narayana.testcontainers;
 
 import dev.snowdrop.boot.narayana.app.TestApplication;
 import dev.snowdrop.boot.narayana.pooled.PooledRecoveryIT;
+import dev.snowdrop.boot.narayana.testcontainers.configuration.MySQLContainerConfiguration;
 import org.junit.jupiter.api.Tag;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.testcontainers.containers.JdbcDatabaseContainer;
-import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Tag("testcontainers")
@@ -34,11 +31,5 @@ import org.testcontainers.junit.jupiter.Testcontainers;
     "spring.datasource.generateUniqueName=false",
     "spring.datasource.name=jdbc"
 })
-public class MySQLPooledRecoveryIT extends PooledRecoveryIT {
-
-    @Container
-    @ServiceConnection
-    static JdbcDatabaseContainer<?> mysql = new MySQLContainer<>("mysql:9.2.0")
-            .withUsername("root")
-            .withPassword("root");
+public class MySQLPooledRecoveryIT extends PooledRecoveryIT implements MySQLContainerConfiguration {
 }

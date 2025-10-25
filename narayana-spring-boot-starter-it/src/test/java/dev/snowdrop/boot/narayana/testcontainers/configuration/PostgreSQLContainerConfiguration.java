@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package dev.snowdrop.boot.narayana.testcontainers;
+package dev.snowdrop.boot.narayana.testcontainers.configuration;
 
-import dev.snowdrop.boot.narayana.generic.GenericRecoveryIT;
-import dev.snowdrop.boot.narayana.testcontainers.configuration.PostgreSQLContainerConfiguration;
-import org.junit.jupiter.api.Tag;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.testcontainers.containers.JdbcDatabaseContainer;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
 
-@Tag("testcontainers")
-@Testcontainers
-public class PostgreSQLGenericRecoveryIT extends GenericRecoveryIT implements PostgreSQLContainerConfiguration {
+public interface PostgreSQLContainerConfiguration {
+
+    @Container
+    @ServiceConnection
+    JdbcDatabaseContainer<?> postgresql = new PostgreSQLContainer<>("postgres:latest")
+            .withCommand("postgres -c max_prepared_transactions=10");
 }

@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package dev.snowdrop.boot.narayana.testcontainers;
+package dev.snowdrop.boot.narayana.testcontainers.configuration;
 
-import dev.snowdrop.boot.narayana.generic.GenericRecoveryIT;
-import dev.snowdrop.boot.narayana.testcontainers.configuration.PostgreSQLContainerConfiguration;
-import org.junit.jupiter.api.Tag;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.testcontainers.containers.JdbcDatabaseContainer;
+import org.testcontainers.containers.MSSQLServerContainer;
+import org.testcontainers.junit.jupiter.Container;
 
-@Tag("testcontainers")
-@Testcontainers
-public class PostgreSQLGenericRecoveryIT extends GenericRecoveryIT implements PostgreSQLContainerConfiguration {
+public interface MSSQLContainerConfiguration {
+
+    @Container
+    @ServiceConnection
+    JdbcDatabaseContainer<?> mssql = new MSSQLServerContainer<>("mcr.microsoft.com/mssql/server:latest")
+            .acceptLicense()
+            .withInitScript("mssql-initscript.sql");
 }
