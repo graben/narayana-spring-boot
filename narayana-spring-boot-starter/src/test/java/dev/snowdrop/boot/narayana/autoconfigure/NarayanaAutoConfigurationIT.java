@@ -72,10 +72,10 @@ class NarayanaAutoConfigurationIT {
     }
 
     @Test
-    void recoveryDbCredentialsShouldBeLoaded() {
+    void recoveryDbRecoveryPropertiesShouldBeLoaded() {
         Properties properties = new Properties();
-        properties.put("narayana.recoveryDbCredentials.user", "userName");
-        properties.put("narayana.recoveryDbCredentials.password", "password");
+        properties.put("narayana.dbRecoveryProperties.user", "userName");
+        properties.put("narayana.dbRecoveryProperties.password", "password");
         PropertiesPropertySource propertySource = new PropertiesPropertySource("test", properties);
 
         this.context = new AnnotationConfigApplicationContext();
@@ -84,15 +84,15 @@ class NarayanaAutoConfigurationIT {
         this.context.refresh();
 
         NarayanaProperties narayanaProperties = this.context.getBean(NarayanaProperties.class);
-        assertThat(narayanaProperties.getRecoveryDbCredentials().getUser()).isEqualTo("userName");
-        assertThat(narayanaProperties.getRecoveryDbCredentials().getPassword()).isEqualTo("password");
+        assertThat(narayanaProperties.getDbRecoveryProperties().getUser()).isEqualTo("userName");
+        assertThat(narayanaProperties.getDbRecoveryProperties().getPassword()).isEqualTo("password");
     }
 
     @Test
-    void recoveryJmsCredentialsShouldBeLoaded() {
+    void recoveryJmsRecoveryPropertiesShouldBeLoaded() {
         Properties properties = new Properties();
-        properties.put("narayana.recoveryJmsCredentials.user", "userName");
-        properties.put("narayana.recoveryJmsCredentials.password", "password");
+        properties.put("narayana.jmsRecoveryProperties.user", "userName");
+        properties.put("narayana.jmsRecoveryProperties.password", "password");
         PropertiesPropertySource propertySource = new PropertiesPropertySource("test", properties);
 
         this.context = new AnnotationConfigApplicationContext();
@@ -101,8 +101,8 @@ class NarayanaAutoConfigurationIT {
         this.context.refresh();
 
         NarayanaProperties narayanaProperties = this.context.getBean(NarayanaProperties.class);
-        assertThat(narayanaProperties.getRecoveryJmsCredentials().getUser()).isEqualTo("userName");
-        assertThat(narayanaProperties.getRecoveryJmsCredentials().getPassword()).isEqualTo("password");
+        assertThat(narayanaProperties.getJmsRecoveryProperties().getUser()).isEqualTo("userName");
+        assertThat(narayanaProperties.getJmsRecoveryProperties().getPassword()).isEqualTo("password");
     }
 
     @Test
