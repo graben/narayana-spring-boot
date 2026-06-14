@@ -60,7 +60,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.activemq</groupId>
+      <groupId>org.apache.artemis</groupId>
       <artifactId>artemis-jakarta-server</artifactId>
       <scope>test</scope>
     </dependency>
@@ -167,7 +167,7 @@
             <configuration>
               <reuseForks>false</reuseForks>
               <parallel>false</parallel>
-              <argLine>-Djdk.attach.allowAttachSelf=true</argLine>
+              <argLine>-Djdk.attach.allowAttachSelf=true -XX:+EnableDynamicAgentLoading -Xshare:off</argLine>
               <excludedGroups>testcontainers</excludedGroups>
             </configuration>
           </execution>
