@@ -159,7 +159,7 @@ public class NarayanaAutoConfiguration {
                 XARecoveryModule xaRecoveryModule) {
             return new GenericXADataSourceWrapper(xaRecoveryModule,
                     narayanaProperties.getTransactionalDriver(),
-                    narayanaProperties.getRecoveryDbCredentials());
+                    narayanaProperties.getDbRecoveryProperties());
         }
 
     }
@@ -176,7 +176,7 @@ public class NarayanaAutoConfiguration {
         public XAConnectionFactoryWrapper xaConnectionFactoryWrapper(TransactionManager transactionManager,
                 XARecoveryModule xaRecoveryModule, NarayanaProperties narayanaProperties) {
             return new GenericXAConnectionFactoryWrapper(transactionManager, xaRecoveryModule,
-                    narayanaProperties.getRecoveryJmsCredentials());
+                    narayanaProperties.getJmsRecoveryProperties());
         }
 
     }
@@ -191,7 +191,7 @@ public class NarayanaAutoConfiguration {
                 XARecoveryModule xaRecoveryModule, NarayanaProperties narayanaProperties) {
             return new PooledXAConnectionFactoryWrapper(transactionManager, xaRecoveryModule,
                     narayanaProperties.getMessaginghub(),
-                    narayanaProperties.getRecoveryJmsCredentials());
+                    narayanaProperties.getJmsRecoveryProperties());
         }
 
     }
