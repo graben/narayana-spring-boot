@@ -91,14 +91,11 @@
         <scope>import</scope>
       </dependency>
       <dependency>
-        <groupId>org.jboss.narayana.jta</groupId>
-        <artifactId>narayana-jta</artifactId>
+        <groupId>org.jboss.narayana</groupId>
+        <artifactId>main-dependency-management</artifactId>
         <version>${narayana.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.narayana.jts</groupId>
-        <artifactId>narayana-jts-integration</artifactId>
-        <version>${narayana.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>io.agroal</groupId>
