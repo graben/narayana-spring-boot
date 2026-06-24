@@ -121,18 +121,24 @@ This repository uses an automated two-step process for releasing artifacts to Ma
 
 ## Step 1: Prepare the Release Version
 
-Before creating a GitHub Release, you need to manually prepare the release version:
+Before creating a GitHub Release, you need to manually prepare the release version via a Pull Request:
 
-1. **Update the version in `pom.xml`** files:
+1. **Create a branch** for the version update:
+   ```bash
+   git checkout -b prepare-release-X.Y.Z
+   ```
+
+2. **Update the version in `pom.xml`** files:
    - Change from `X.Y.Z-SNAPSHOT` to `X.Y.Z` (remove the `-SNAPSHOT` suffix)
    - Example: `1.2.3-SNAPSHOT` → `1.2.3`
 
-2. **Commit and push to main**:
+3. **Commit, push, and open a PR**:
    ```bash
    git add pom.xml
-   git commit -m "chore: prepare release X.Y.Z"
-   git push origin main
+   git commit -m "prepare release X.Y.Z"
+   git push origin prepare-release-X.Y.Z
    ```
+   Open a Pull Request targeting `main` and ask for review. Once CI passes it can be merged.
 
 ## Step 2: Create a GitHub Release
 
@@ -170,11 +176,11 @@ Once the GitHub Release is published, the `Manual Version Bump to Next SNAPSHOT`
 ## Complete Flow Diagram
 
 ```
-1. Manual: Update pom.xml (1.2.3-SNAPSHOT → 1.2.3)
+1. Manual: Create branch, update pom.xml (1.2.3-SNAPSHOT → 1.2.3)
    ↓
-2. Manual: Commit and push to main
+2. Manual: Open PR, review, and merge to main
    ↓
-3. Manual: Create GitHub Release with tag v1.2.3
+3. Manual: Create GitHub Release with tag 1.2.3
    ↓
 4. Automated: Publish workflow verifies and publishes 1.2.3 to Maven Central
    ↓
