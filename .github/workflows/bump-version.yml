@@ -1,12 +1,8 @@
-name: Manual Version Bump to Next SNAPSHOT
+name: Version Bump to Next SNAPSHOT
 
 on:
-  workflow_run:
-    workflows: [ "Publish package to the Maven Central Repository" ]
-    types:
-      - completed
-    branches:
-      - main
+  release:
+    types: [published]
   workflow_dispatch:
 
 jobs:

@@ -155,7 +155,7 @@ The `Publish package to the Maven Central Repository` is triggered. This workflo
 
 ### Automated Step 2: Bump to Next SNAPSHOT Version
 
-Once the publish workflow completes successfully, the `Manual Version Bump to Next SNAPSHOT` is triggered. This workflow will automatically:
+Once the GitHub Release is published, the `Manual Version Bump to Next SNAPSHOT` is triggered. This workflow will automatically:
 - Calculate the next `-SNAPSHOT` version (e.g., `1.2.4-SNAPSHOT`)
 - Create a new branch called `bump-version-X.Y.Z-SNAPSHOT`
 - Update the `pom.xml` with the new version
@@ -178,7 +178,7 @@ Once the publish workflow completes successfully, the `Manual Version Bump to Ne
    ↓
 4. Automated: Publish workflow verifies and publishes 1.2.3 to Maven Central
    ↓
-5. Automated: Bump-version workflow creates PR for 1.2.4-SNAPSHOT
+5. Automated: Bump-version workflow (triggered by the release event) creates PR for 1.2.4-SNAPSHOT
    ↓
 6. Manual: Review and merge the PR
    ↓
@@ -190,7 +190,7 @@ Once the publish workflow completes successfully, the `Manual Version Bump to Ne
 - ⚠️ The tag created in the GitHub release **must match** the version in `pom.xml` (e.g., tag `v1.2.3` for version `1.2.3`).
 - ⚠️ The version in `pom.xml` must **not** contain `-SNAPSHOT` when creating the release.
 - ✅ The publish workflow includes safety checks to prevent publishing incorrect versions.
-- ✅ The PR for the version bump will only be created if the publish workflow succeeds.
+- ✅ The version bump workflow is triggered directly by the release event (not chained to the publish workflow).
 - 🔧 Both workflows can also be triggered manually via `workflow_dispatch` if needed.
 
 
