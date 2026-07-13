@@ -6,6 +6,18 @@ on:
     branches: [ main ]
 jobs:
   build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+    - uses: actions/setup-java@v5
+      with:
+        cache: 'maven'
+        java-version: 21
+        distribution: 'temurin'
+    - name: Install
+      run: ./mvnw install -DskipTests
+  test:
+    needs: build
     strategy:
       matrix:
         java: [ 25, 21, 17 ]
@@ -19,7 +31,5 @@ jobs:
         cache: 'maven'
         java-version: ${{ matrix.java }}
         distribution: 'temurin'
-    - name: Install
-      run: ./mvnw install -DskipTests
     - name: Test
-      run: ./mvnw -Ptestcontainers verify
+      run: ./mvnw --projects narayana-spring-boot-starter-it -Ptestcontainers verify
