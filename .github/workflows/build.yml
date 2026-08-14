@@ -14,8 +14,13 @@ jobs:
         cache: 'maven'
         java-version: 21
         distribution: 'temurin'
-    - name: Install
-      run: ./mvnw install -DskipTests
+    - name: Build and test core modules
+      run: ./mvnw --projects !narayana-spring-boot-starter-it install
+    - uses: actions/upload-artifact@v7
+      with:
+        name: narayana-spring-boot-repository-artifact
+        path: ~/.m2/repository/dev/snowdrop/**
+        retention-days: 1
   test:
     needs: build
     strategy:
@@ -31,5 +36,9 @@ jobs:
         cache: 'maven'
         java-version: ${{ matrix.java }}
         distribution: 'temurin'
-    - name: Test
+    - uses: actions/download-artifact@v8
+      with:
+        name: narayana-spring-boot-repository-artifact
+        path: ~/.m2/repository/dev/snowdrop
+    - name: Run integration tests
       run: ./mvnw --projects narayana-spring-boot-starter-it -Ptestcontainers verify

@@ -19,12 +19,12 @@ is correct.
 
 By default, Narayana transaction logs are written to a `transaction-logs` directory in your application home directory
 (the directory in which your application jar file resides). You can customize the location of this directory by setting
-a `narayana.log-dir` property in your application.properties file. Properties starting with `narayana` can also be used
+a `narayana.log-dir` property in your application.yaml file. Properties starting with `narayana` can also be used
 to customize the Narayana configuration. See the
 [NarayanaProperties](narayana-spring-boot-core/src/main/java/dev/snowdrop/boot/narayana/core/properties/NarayanaProperties.java)
 Javadoc for complete details.
 
-> Only a limited number of Narayana configuration options are exposed via `application.properties`. For a more complex
+> Only a limited number of Narayana configuration options are exposed via `application.yaml`. For a more complex
 configuration you can provide a `jbossts-properties.xml` file. To get more details, please, consult
 Narayana project [documentation](http://narayana.io/docs/project/index.html).
 
@@ -70,7 +70,7 @@ which provides connection pooling and many other features. To enable Agroal add 
 <dependency>
     <groupId>io.agroal</groupId>
     <artifactId>agroal-spring-boot-starter</artifactId>
-    <version>2.x.x</version>
+    <version>3.x.x</version>
 </dependency>
 ```
 
@@ -104,15 +104,15 @@ and many other features. To enable MessagingHub add the following dependency and
     <artifactId>pooled-jms</artifactId>
 </dependency>
 ```
-```properties
-narayana.messaginghub.enabled=true
+```yaml
+narayana.messaginghub.enabled: true
 ```
 
 All MessagingHub configuration properties described in its [documentation](https://github.com/messaginghub/pooled-jms/blob/main/pooled-jms-docs/Configuration.md)
 are mapped with a prefix `narayana.messaginghub`. So for example if you'd like to set a max connections pool size to 10,
 you could do that by adding this entry to your application configuration:
-```properties
-narayana.messaginghub.maxConnections=10
+```yaml
+narayana.messaginghub.maxConnections: 10
 ```
 
 # Release Process

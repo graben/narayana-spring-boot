@@ -10,11 +10,11 @@ All pods of the statefulset require access to a shared volume that is used to st
 
 The pod-0 of the StatefulSet periodically checks the status and scale the StatefulSet to the right size if there's a mismatch.
 
-A "edit" role on the namespace is required on Openshift in order for the pod-0 to change the number of replicas. 
+A "edit" role on the namespace is required on OpenShift in order for the pod-0 to change the number of replicas. 
 
 ## Configuration
 
-Configuring Narayana to work on Openshift with the recovery controller requires special care. The following snipped shows an example of `application.properties`:
+Configuring Narayana to work on OpenShift with the recovery controller requires special care. The following snipped shows an example of `application.yaml`:
 
 ```properties
 # You need to replace the following options in the Kubernetes yaml descriptor, see below
