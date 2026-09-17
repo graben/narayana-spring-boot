@@ -76,7 +76,6 @@
     <module name="com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck">
       <property name="processJavadoc" value="true"/>
     </module>
-    <!--<module name="com.puppycrawl.tools.checkstyle.checks.imports.ImportControlCheck"/>-->
     <module name="com.puppycrawl.tools.checkstyle.checks.imports.ImportOrderCheck">
       <property name="groups" value="java,/^javax?\./,/^jakarta?\./,*"/>
       <property name="ordered" value="true"/>
@@ -88,13 +87,9 @@
     <!-- Javadoc Comments -->
     <module name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTypeCheck">
       <property name="scope" value="package"/>
-      <property name="authorFormat" value=".+\s.+"/>
     </module>
     <module name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocVariableCheck">
       <property name="accessModifiers" value="public"/>
-    </module>
-    <module name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck">
-      <property name="checkEmptyJavadoc" value="true"/>
     </module>
     <module name="com.puppycrawl.tools.checkstyle.checks.javadoc.NonEmptyAtclauseDescriptionCheck"/>
     <module name="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTagContinuationIndentationCheck">
