@@ -166,7 +166,6 @@
           <execution>
             <configuration>
               <reuseForks>false</reuseForks>
-              <parallel>false</parallel>
               <argLine>-Djdk.attach.allowAttachSelf=true -XX:+EnableDynamicAgentLoading -Xshare:off</argLine>
               <excludedGroups>testcontainers</excludedGroups>
             </configuration>
@@ -198,7 +197,6 @@
               <execution>
                 <configuration>
                   <reuseForks>false</reuseForks>
-                  <parallel>false</parallel>
                   <argLine>-Djdk.attach.allowAttachSelf=true</argLine>
                   <excludedGroups>none</excludedGroups>
                 </configuration>
